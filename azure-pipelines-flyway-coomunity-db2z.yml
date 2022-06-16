@@ -41,7 +41,7 @@ steps:
   displayName: 'Do a Flyway test with the new jars'
   inputs:
     targetType: inline
-    script: 'flyway -X migrate -configFiles=$FLYWAY_CONF -createSchemas="false" -schemas="ZDQO01" -baselineOnMigrate=true -dryRunOutput="/tmp/dryrun.log"|| exit 1'
+    script: 'flyway -X migrate -configFiles=$FLYWAY_CONF -createSchemas="false" -schemas="ZDQO01" -baselineOnMigrate=true || exit 1'
 
 
 # Kopieer de jars naar nexus (Maarten vraagt DPS toegang tot Nexus, erna kun je los met mvn deploy)
