@@ -26,3 +26,4 @@ flyway-*compare/**/resources/*compare/
 flyway-rgcompare/src/main/resources/obj/
 flyway-rgcompare/rgcompare/
 out/**
+.factorypath
