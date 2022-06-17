@@ -33,6 +33,12 @@ steps:
     effectivePomSkip: false
 
 - task: Bash@3
+  displayName: 'Remove previous Flyway jars from runtime'
+  inputs:
+    targetType: inline
+    script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
+
+- task: Bash@3
   displayName: 'Copy Flyway jars from target to runtime'
   inputs:
     targetType: inline
@@ -41,5 +47,6 @@ steps:
   displayName: 'Do a Flyway test with the new jars'
   inputs:
     targetType: inline
-    script: 'flyway -X migrate -configFiles=$FLYWAY_CONF -createSchemas="false" -schemas="ZDQO01" -baselineOnMigrate=true -dryRunOutput="/tmp/dryrun.log"|| exit 1'
+    script: 'flyway -X migrate -configFiles=$FLYWAY_CONF -createSchemas="false" -schemas="ZDQO01" -baselineOnMigrate=true || exit 1'
+    
 
