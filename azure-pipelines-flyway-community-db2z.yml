@@ -1,4 +1,4 @@
-# Flyway pipeline
+# Flyway pipeline db2Z community edition
 
 trigger:
 - feature/db2z
