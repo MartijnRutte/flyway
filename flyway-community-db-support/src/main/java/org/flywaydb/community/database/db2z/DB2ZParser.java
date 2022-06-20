@@ -58,14 +58,14 @@ public class DB2ZParser extends Parser {
 	private static final Pattern INTEGER_PARM_REGEX = Pattern.compile("-?\\d+");
 
     // @Override
-    // protected StatementType detectStatementType(String simplifiedStatement, ParserContext context) {
-    //     LOG.debug("detectStatementType: simplifiedStatement=" + simplifiedStatement);
-	//     if (STORED_PROCEDURE_CALL.matcher(simplifiedStatement).matches()) {
-    //         LOG.debug("detectStatementType: DB2Z CALL statement found" );
-    //         return DB2Z_CALL_STATEMENT;
-    //     }
-    //     return super.detectStatementType(simplifiedStatement, context);
-    // }
+    protected StatementType detectStatementType(String simplifiedStatement, ParserContext context, PeekingReader reader) {
+        LOG.debug("detectStatementType: simplifiedStatement=" + simplifiedStatement);
+	    if (STORED_PROCEDURE_CALL.matcher(simplifiedStatement).matches()) {
+            LOG.debug("detectStatementType: DB2Z CALL statement found" );
+            return DB2Z_CALL_STATEMENT;
+        }
+        return super.detectStatementType(simplifiedStatement, context, reader);
+    }
 
     @Override
     protected ParsedSqlStatement createStatement(PeekingReader reader, Recorder recorder,
