@@ -98,6 +98,7 @@ public class DB2ZParser extends Parser {
 						parms[i] = prmTrimmed;												
 					}
                 }
+                LOG.debug("createStatement PLAIN: DB2Z CALL " + procName + " " + parms);
 	            return new DB2ZCallProcedureParsedStatement(statementPos, statementLine, statementCol,
                     sql, delimiter, canExecuteInTransaction, procName, parms);
 			}
