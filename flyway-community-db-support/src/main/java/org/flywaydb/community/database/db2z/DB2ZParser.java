@@ -74,6 +74,7 @@ public class DB2ZParser extends Parser {
                                                  StatementType statementType, boolean canExecuteInTransaction,
                                                  Delimiter delimiter, String sql
     ) throws IOException {
+        LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         if (statementType == DB2Z_CALL_STATEMENT) {
 			Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
 			
