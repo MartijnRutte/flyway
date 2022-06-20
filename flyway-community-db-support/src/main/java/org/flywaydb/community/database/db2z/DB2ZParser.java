@@ -75,9 +75,10 @@ public class DB2ZParser extends Parser {
                                                  Delimiter delimiter, String sql
     ) throws IOException {
         LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
+        LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         if (statementType == DB2Z_CALL_STATEMENT) {
+            LOG.debug("MET PARAMS OF ZONDER PARAMS????");
 			Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
-			
 			if(callMatcher.matches()) {
 				String procName = callMatcher.group("procname");
 				String parmsString = callMatcher.group("args");
