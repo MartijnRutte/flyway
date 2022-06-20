@@ -81,7 +81,8 @@ public class DB2ZParser extends Parser {
             Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
             LOG.debug(sql);
             LOG.debug("PAK STRING HIERBOVEN");
-            LOG.debug(callMatcher.matches());
+            LOG.debug(DB2Z_CALL_WITH_PARMS_REXEX);
+            LOG.debug(String.valueOf(callMatcher.matches()));
 			if(callMatcher.matches()) {
 				String procName = callMatcher.group("procname");
                 String parmsString = callMatcher.group("args");
