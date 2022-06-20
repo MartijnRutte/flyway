@@ -78,10 +78,15 @@ public class DB2ZParser extends Parser {
         LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         if (statementType == DB2Z_CALL_STATEMENT) {
             LOG.debug("MET PARAMS OF ZONDER PARAMS????");
-			Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
+            Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
+            LOG.debug(sql);
+            LOG.debug("PAK STRING HIERBOVEN");
 			if(callMatcher.matches()) {
 				String procName = callMatcher.group("procname");
-				String parmsString = callMatcher.group("args");
+                String parmsString = callMatcher.group("args");
+                LOG.debug("MET KEREL");
+                LOG.debug(procName);
+                LOG.debug(parmsString);
 	            LOG.debug("createStatement: DB2Z CALL " + procName );
 				String[] parmStrings = PARMS_SPLIT_REGEX.split(parmsString);
 				Object[] parms = new Object[parmStrings.length];
@@ -102,7 +107,7 @@ public class DB2ZParser extends Parser {
                 }
 	            return new DB2ZCallProcedureParsedStatement(statementPos, statementLine, statementCol,
                     sql, delimiter, canExecuteInTransaction, procName, parms);
-			}
+            }
         }
         LOG.debug("createStatement PLAIN: DB2Z CALL " + statementType + " " + sql);
         return super.createStatement(reader, recorder, statementPos, statementLine, statementCol,
