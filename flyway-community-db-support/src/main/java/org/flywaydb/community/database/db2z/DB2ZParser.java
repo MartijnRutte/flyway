@@ -103,7 +103,7 @@ public class DB2ZParser extends Parser {
                     sql, delimiter, canExecuteInTransaction, procName, parms);
 			}
         }
-        LOG.debug("createStatement PLAIN: DB2Z CALL " + procName + " " + parms);
+        LOG.debug("createStatement PLAIN: DB2Z CALL " + statementType + " " + sql);
         return super.createStatement(reader, recorder, statementPos, statementLine, statementCol,
                 nonCommentPartPos, nonCommentPartLine, nonCommentPartCol,
                 statementType, canExecuteInTransaction, delimiter, sql
