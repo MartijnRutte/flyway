@@ -25,9 +25,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+// ruttm03 added for debugging reasons
+import lombok.CustomLog;
+
 /**
  * Collection of utility methods for querying the DB. Inspired by Spring's JdbcTemplate.
  */
+@CustomLog
 public class JdbcTemplate {
     protected final Connection connection;
     /**
@@ -178,6 +182,7 @@ public class JdbcTemplate {
     public void execute(String sql, Object... params) throws SQLException {
         PreparedStatement statement = null;
         try {
+            LOG.debug("EXEC PLAIN");
             statement = prepareStatement(sql, params);
             statement.execute();
         } finally {
@@ -197,6 +202,8 @@ public class JdbcTemplate {
         Results results = new Results();
         PreparedStatement statement = null;
         try {
+            LOG.debug("EXEC CALLABLE");
+            LOG.debug(sql);
             statement = prepareStatement(sql, params);
             boolean hasResults = statement.execute();
             extractResults(results, statement, sql, hasResults);
@@ -219,6 +226,7 @@ public class JdbcTemplate {
         Results results = new Results();
         Statement statement = null;
         try {
+            LOG.debug("EXEC STATEMENT");
             statement = connection.createStatement();
             statement.setEscapeProcessing(false);
 
