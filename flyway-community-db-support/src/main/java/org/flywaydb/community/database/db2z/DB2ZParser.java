@@ -48,14 +48,10 @@ public class DB2ZParser extends Parser {
             ".*DROP\\s([^\\s]+\\s){0,2}IF\\sEXISTS");
     private static final Pattern STORED_PROCEDURE_CALL = Pattern.compile(
             "^CALL");
-	private static final StatementType DB2Z_CALL_STATEMENT = new StatementType();
-    // private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
-    //         "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
-    // private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
-    //     "^CALL\\.*", Pattern.CASE_INSENSITIVE);
-    private static final Pattern STORED_PROCEDURE_CALL_REGEX = Pattern.compile(
-                    "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))"
-                    , Pattern.CASE_INSENSITIVE);
+    private static final StatementType DB2Z_CALL_STATEMENT = new StatementType();
+    // Do not assume first line is beginning of CALL statement. Maybe comment or whitelines first...
+    private static final Pattern DB2Z_CALL_WITH_PARMS_REGEX = Pattern.compile(
+            "CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
 
 	//Split on comma if that comma has zero, or an even number of quotes ahead
 	private static final Pattern PARMS_SPLIT_REGEX = Pattern.compile(",(?=(?:[^']*'[^']*')*[^']*$)");
@@ -83,7 +79,7 @@ public class DB2ZParser extends Parser {
         if (statementType == DB2Z_CALL_STATEMENT) {
             LOG.debug("MET PARAMS OF ZONDER PARAMS????");
             // Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
-            Matcher callMatcher = STORED_PROCEDURE_CALL_REGEX.matcher(sql);
+            Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REGEX.matcher(sql);
             LOG.debug("xxx" + sql + "xxx");
             LOG.debug("PAK STRING HIERBOVEN");
             LOG.debug("HIERONDER REGEX UITKOMSTEN");
