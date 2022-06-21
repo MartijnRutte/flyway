@@ -52,7 +52,7 @@ public class DB2ZParser extends Parser {
     // private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
     //         "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
     private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
-        "^CALL\\s+([^\\s]+\\.)?[^\\s]+)(\\((\\S.*)\\))", Pattern.CASE_INSENSITIVE);
+        "^CALL\\s+(([^\\s]+\\.)?[^\\s]+)(\\((\\S.*)\\))", Pattern.CASE_INSENSITIVE);
 
 	//Split on comma if that comma has zero, or an even number of quotes ahead
 	private static final Pattern PARMS_SPLIT_REGEX = Pattern.compile(",(?=(?:[^']*'[^']*')*[^']*$)");
