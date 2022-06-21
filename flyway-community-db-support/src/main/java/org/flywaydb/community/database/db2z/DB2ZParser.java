@@ -84,7 +84,7 @@ public class DB2ZParser extends Parser {
             LOG.debug("PAK STRING HIERBOVEN");
             LOG.debug("HIERONDER REGEX UITKOMSTEN");
             LOG.debug(String.valueOf(callMatcher.matches()));
-			if(callMatcher.matches()) {
+			if(callMatcher.find()) {
 				String procName = callMatcher.group("procname");
                 String parmsString = callMatcher.group("args");
                 LOG.debug("MET KEREL");
