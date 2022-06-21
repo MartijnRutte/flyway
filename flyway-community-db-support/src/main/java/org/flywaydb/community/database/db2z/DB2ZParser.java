@@ -84,7 +84,7 @@ public class DB2ZParser extends Parser {
             LOG.debug("MET PARAMS OF ZONDER PARAMS????");
             // Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
             Matcher callMatcher = STORED_PROCEDURE_CALL_REGEX.matcher(sql);
-            LOG.debug(sql);
+            LOG.debug("xxx" + sql + "xxx");
             LOG.debug("PAK STRING HIERBOVEN");
             LOG.debug("HIERONDER REGEX UITKOMSTEN");
             LOG.debug(String.valueOf(callMatcher.matches()));
