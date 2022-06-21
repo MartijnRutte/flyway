@@ -51,7 +51,7 @@ public class DB2ZParser extends Parser {
     private static final StatementType DB2Z_CALL_STATEMENT = new StatementType();
     // Do not assume first line is beginning of CALL statement. Maybe comment or whitelines first...
     private static final Pattern DB2Z_CALL_WITH_PARMS_REGEX = Pattern.compile(
-            "CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
+            "CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\(\\s*(?<args>\\S.*)\\s*\\))", Pattern.CASE_INSENSITIVE);
 
 	//Split on comma if that comma has zero, or an even number of quotes ahead
 	private static final Pattern PARMS_SPLIT_REGEX = Pattern.compile(",(?=(?:[^']*'[^']*')*[^']*$)");
