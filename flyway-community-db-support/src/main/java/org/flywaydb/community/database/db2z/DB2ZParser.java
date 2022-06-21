@@ -51,6 +51,8 @@ public class DB2ZParser extends Parser {
 	private static final StatementType DB2Z_CALL_STATEMENT = new StatementType();
     private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
             "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
+        "^CALL\\s+([^\\s]+\\.)?[^\\s]+)(\\((\\S.*)\\))", Pattern.CASE_INSENSITIVE);
 
 	//Split on comma if that comma has zero, or an even number of quotes ahead
 	private static final Pattern PARMS_SPLIT_REGEX = Pattern.compile(",(?=(?:[^']*'[^']*')*[^']*$)");
@@ -74,7 +76,6 @@ public class DB2ZParser extends Parser {
                                                  StatementType statementType, boolean canExecuteInTransaction,
                                                  Delimiter delimiter, String sql
     ) throws IOException {
-        LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         if (statementType == DB2Z_CALL_STATEMENT) {
             LOG.debug("MET PARAMS OF ZONDER PARAMS????");
