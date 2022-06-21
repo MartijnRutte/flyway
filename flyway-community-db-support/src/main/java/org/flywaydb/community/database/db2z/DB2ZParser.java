@@ -75,22 +75,12 @@ public class DB2ZParser extends Parser {
                                                  StatementType statementType, boolean canExecuteInTransaction,
                                                  Delimiter delimiter, String sql
     ) throws IOException {
-        LOG.debug("HIER KOMT DE AFSLAG, DUDE!");
         if (statementType == DB2Z_CALL_STATEMENT) {
-            LOG.debug("MET PARAMS OF ZONDER PARAMS????");
             // Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
             Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REGEX.matcher(sql);
-            LOG.debug("xxx" + sql + "xxx");
-            LOG.debug("PAK STRING HIERBOVEN");
-            LOG.debug("HIERONDER REGEX UITKOMSTEN");
-            LOG.debug(String.valueOf(callMatcher.matches()));
 			if(callMatcher.find()) {
 				String procName = callMatcher.group("procname");
                 String parmsString = callMatcher.group("args");
-                LOG.debug("MET KEREL");
-                LOG.debug(procName);
-                LOG.debug(parmsString);
-	            LOG.debug("createStatement: DB2Z CALL " + procName );
 				String[] parmStrings = PARMS_SPLIT_REGEX.split(parmsString);
 				Object[] parms = new Object[parmStrings.length];
 				for(int i = 0; i < parmStrings.length; i++) {
@@ -101,7 +91,9 @@ public class DB2ZParser extends Parser {
 						//de-escape any single quotes inside the string
 						parms[i] = prmTrimmed.substring(1, prmTrimmed.length() - 1).replace("''", "'");
 					} else if (INTEGER_PARM_REGEX.matcher(prmTrimmed).matches()) {
-						parms[i] = new Integer(prmTrimmed);
+                        // ruttm03 I think below line is deprecated....
+                        parms[i] = new Integer(prmTrimmed);
+                        // parms[i] = Integer.valueOf(prmTrimmed);
 					} else if (prmTrimmed.toUpperCase().equals("NULL")) {
 						parms[i] = null;						
 					} else {
