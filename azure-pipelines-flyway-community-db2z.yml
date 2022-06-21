@@ -44,7 +44,7 @@ steps:
     goals: 'package'
     # publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.17'
+    jdkVersionOption: '1.8'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
