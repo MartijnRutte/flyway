@@ -49,8 +49,8 @@ public class DB2ZParser extends Parser {
     private static final Pattern STORED_PROCEDURE_CALL = Pattern.compile(
             "^CALL");
 	private static final StatementType DB2Z_CALL_STATEMENT = new StatementType();
-    private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
-            "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
+    // private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
+    //         "^CALL\\s+(?<procname>([^\\s]+\\.)?[^\\s]+)(\\((?<args>\\S.*)\\))", Pattern.CASE_INSENSITIVE);
     private static final Pattern DB2Z_CALL_WITH_PARMS_REXEX = Pattern.compile(
         "^CALL\\s+([^\\s]+\\.)?[^\\s]+)(\\((\\S.*)\\))", Pattern.CASE_INSENSITIVE);
 
