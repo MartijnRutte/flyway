@@ -39,8 +39,6 @@ jobs:
           inputs:
             targetType: 'inline'
             script: printenv | sort
-
-        # Haal ergens in dit proces de java code door de SonarQube controles heen
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
@@ -50,7 +48,7 @@ jobs:
             goals: 'package'
             # publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '11'
+            jdkVersionOption: '1.11'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
@@ -82,4 +80,32 @@ jobs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
 
-        # Hier moet en push van de jars naar nexus komen (TASK 113)
+        - task: Maven@3
+          displayName: 'Run SonarQube analysis'
+          inputs:
+            mavenPomFile: 'pom.xml'
+            goals: 'sonar:sonar'
+            options: '--no-transfer-progress -DskipTests -Psonarqube'
+            publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '1.11'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+        - task: SonarQubePublish@4
+          displayName: 'Publish SonarQube QualityGate result'
+          inputs:
+            pollingTimeoutSec: '300'
+        # - task: Maven@3
+        #   displayName: 'Upload release-candidates to Nexus'
+        #   condition: or(variables.isDevelop, variables.isHotfixBranch, variables.isReleaseBranch)
+        #   inputs:
+        #     mavenPomFile: 'pom.xml'
+        #     goals: 'deploy'
+        #     options: '--no-transfer-progress -s $(settingsFile.secureFilePath) -DskipTests'
+        #     publishJUnitResults: false
+        #     javaHomeOption: 'JDKVersion'
+        #     jdkVersionOption: '1.11'
+        #     mavenVersionOption: 'Default'
+        #     mavenAuthenticateFeed: false
+        #     effectivePomSkip: false
