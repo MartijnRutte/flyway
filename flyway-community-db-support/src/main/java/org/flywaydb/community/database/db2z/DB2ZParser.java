@@ -85,7 +85,7 @@ public class DB2ZParser extends Parser {
 				Object[] parms = new Object[parmStrings.length];
 				for(int i = 0; i < parmStrings.length; i++) {
 		            String prmTrimmed = parmStrings[i].trim();
-					LOG.debug("createStatement: DB2Z CALL parm: " + prmTrimmed );
+					LOG.debug("createStatement: DB2Z CALL with parms: " + procName + " " + prmTrimmed );
 				    if (STRING_PARM_REGEX.matcher(prmTrimmed).matches()) {
 						//For string literals, remove the surrounding single quotes and 
 						//de-escape any single quotes inside the string
@@ -104,11 +104,12 @@ public class DB2ZParser extends Parser {
                     sql, delimiter, canExecuteInTransaction, procName, parms);
             }
         }
-        LOG.debug("createStatement PLAIN: DB2Z CALL " + statementType + " " + sql);
+        LOG.debug("createStatement: DB2Z CALL no parms " + statementType + " " + sql);
         return super.createStatement(reader, recorder, statementPos, statementLine, statementCol,
                 nonCommentPartPos, nonCommentPartLine, nonCommentPartCol,
                 statementType, canExecuteInTransaction, delimiter, sql
         );
+        LOG.info(sql)
     }
 
     @Override

@@ -88,9 +88,7 @@ public class DB2ZCallProcedureParsedStatement extends ParsedSqlStatement {
 								}
 								results.setException(new SQLException(message));
 							} else {
-								// In case of successful completion, only log last message
-								// ruttm03 Do log all results
-								// resultData.clear();
+								// Always log all results from CALL statement, success or failure
 								resultData.add(lastResultRow);
 							}
 						}
