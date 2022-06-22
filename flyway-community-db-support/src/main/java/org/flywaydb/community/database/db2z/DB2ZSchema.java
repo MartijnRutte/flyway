@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.flywaydb.community.database.db2z;
 
+import lombok.CustomLog;
 import org.flywaydb.core.internal.database.base.Function;
 import org.flywaydb.core.internal.database.base.Schema;
 import org.flywaydb.core.internal.database.base.Table;
@@ -28,6 +30,7 @@ import java.util.List;
 /**
  * DB2 implementation of Schema.
  */
+@CustomLog
 public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
     /**
      * Creates a new DB2 schema.
@@ -235,6 +238,7 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         List<String> dropStatements = new ArrayList<>();
         List<String> dbObjects = jdbcTemplate.queryForStringList(query);
         for (String dbObject : dbObjects) {
+            LOG.info(dropPrefix + " " + database.quote(name, dbObject));
             dropStatements.add(dropPrefix + " " + database.quote(name, dbObject));
         }
         return dropStatements;
