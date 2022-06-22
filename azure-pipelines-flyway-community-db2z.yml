@@ -70,3 +70,5 @@ steps:
   inputs:
     targetType: inline
     script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
+
+# Hier moet en push van de jars naar nexus komen (TASK 113)
