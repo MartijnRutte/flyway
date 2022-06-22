@@ -186,6 +186,7 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         List<String> dropStatements = new ArrayList<>();
         List<String> dbObjects = jdbcTemplate.queryForStringList(dropTablespaceGenQuery);
         for (String dbObject : dbObjects) {
+            LOG.info("DROP TABLESPACE " + database.quote(database.getName(), dbObject));
             dropStatements.add("DROP TABLESPACE " + database.quote(database.getName(), dbObject));
         }
         return dropStatements;
@@ -197,6 +198,7 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         List<String> dropStatements = new ArrayList<>();
         List<String> dbObjects = jdbcTemplate.queryForStringList(dropTablespaceGenQuery);
         for (String dbObject : dbObjects) {
+            LOG.info("DROP TABLESPACE " + database.quote(database.getName(), dbObject));
             dropStatements.add("DROP TABLESPACE " + database.quote(database.getName(), dbObject));
         }
         return dropStatements;
@@ -251,6 +253,7 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         List<String> dropVersioningStatements = new ArrayList<>();
         Table[] versioningTables = findTables("select rtrim(NAME) from SYSIBM.SYSTABLES where VERSIONING_TABLE <> '' and DBNAME = '" + database.getName() + "' AND CREATOR = ?", name);
         for (Table table : versioningTables) {
+            LOG.info("ALTER TABLE " + table.toString() + " DROP VERSIONING");
             dropVersioningStatements.add("ALTER TABLE " + table.toString() + " DROP VERSIONING");
         }
 
