@@ -19,61 +19,66 @@
 trigger:
 - feature/db2z
 
-pool:
-  name: DPS
+jobs:
+- deployment:
+  environment: 'flyway-develop'
+  pool:
+    name: DPS
+  strategy:
+    runOnce:
+      deploy:   
+        steps:
+        - task: Bash@3
+          displayName: 'set env BUILD_JDK to $JAVA_HOME'
+          inputs:
+            targetType: 'inline'
+            script: 'echo "##vso[task.setvariable variable=BUILD_JDK]$JAVA_HOME"'
+        - task: Bash@3
+          displayName: 'Print environment variables'
+          inputs:
+            targetType: 'inline'
+            script: printenv | sort
 
-steps:
-- task: Bash@3
-  displayName: 'set env BUILD_JDK to $JAVA_HOME'
-  inputs:
-    targetType: 'inline'
-    script: 'echo "##vso[task.setvariable variable=BUILD_JDK]$JAVA_HOME"'
-- task: Bash@3
-  displayName: 'Print environment variables'
-  inputs:
-    targetType: 'inline'
-    script: printenv | sort
+        # Haal ergens in dit proces de java code door de SonarQube controles heen
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            mavenOptions: '-Xmx3072m'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'package'
+            # publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '11'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
 
-# Haal ergens in dit proces de java code door de SonarQube controles heen
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
-    # publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '11'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
+        - task: Bash@3
+          displayName: 'Remove previous Flyway jars from runtime'
+          inputs:
+            targetType: inline
+            script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
 
-- task: Bash@3
-  displayName: 'Remove previous Flyway jars from runtime'
-  inputs:
-    targetType: inline
-    script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
+        - task: Bash@3
+          displayName: 'Copy Flyway jars from target to runtime'
+          inputs:
+            targetType: inline
+            script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
+        - task: Bash@3
+          displayName: 'Do a Flyway test with the new jars: # 1: The cleanup'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
+        - task: Bash@3
+          displayName: 'Do a Flyway test with the new jars: # 2: The migration'
+          inputs:
+            targetType: inline
+            script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
+        - task: Bash@3
+          displayName: 'And finally clean up the mess you made'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
 
-- task: Bash@3
-  displayName: 'Copy Flyway jars from target to runtime'
-  inputs:
-    targetType: inline
-    script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
-- task: Bash@3
-  displayName: 'Do a Flyway test with the new jars: # 1: The cleanup'
-  inputs:
-    targetType: inline
-    script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-- task: Bash@3
-  displayName: 'Do a Flyway test with the new jars: # 2: The migration'
-  inputs:
-    targetType: inline
-    script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
-- task: Bash@3
-  displayName: 'And finally clean up the mess you made'
-  inputs:
-    targetType: inline
-    script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-
-# Hier moet en push van de jars naar nexus komen (TASK 113)
+        # Hier moet en push van de jars naar nexus komen (TASK 113)
