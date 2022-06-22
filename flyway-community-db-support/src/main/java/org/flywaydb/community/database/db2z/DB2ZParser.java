@@ -75,6 +75,8 @@ public class DB2ZParser extends Parser {
                                                  StatementType statementType, boolean canExecuteInTransaction,
                                                  Delimiter delimiter, String sql
     ) throws IOException {
+        // Always display parsed sql comment included
+        LOG.info(sql);
         if (statementType == DB2Z_CALL_STATEMENT) {
             // Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REXEX.matcher(sql);
             Matcher callMatcher = DB2Z_CALL_WITH_PARMS_REGEX.matcher(sql);
@@ -109,7 +111,6 @@ public class DB2ZParser extends Parser {
                 nonCommentPartPos, nonCommentPartLine, nonCommentPartCol,
                 statementType, canExecuteInTransaction, delimiter, sql
         );
-        LOG.info(sql)
     }
 
     @Override
