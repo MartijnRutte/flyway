@@ -85,7 +85,7 @@ jobs:
           inputs:
             mavenPomFile: 'pom.xml'
             goals: 'sonar:sonar'
-            options: '--no-transfer-progress -DskipTests -Psonarqube'
+            options: '-DskipTests -Psonarqube'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
@@ -102,7 +102,7 @@ jobs:
         #   inputs:
         #     mavenPomFile: 'pom.xml'
         #     goals: 'deploy'
-        #     options: '--no-transfer-progress -s $(settingsFile.secureFilePath) -DskipTests'
+        #     options: '-s $(settingsFile.secureFilePath) -DskipTests'
         #     publishJUnitResults: false
         #     javaHomeOption: 'JDKVersion'
         #     jdkVersionOption: '1.11'
