@@ -29,6 +29,10 @@ jobs:
     runOnce:
       deploy:   
         steps:
+        - task: DownloadSecureFile@1
+            name: "settingsFile"
+            inputs:
+              secureFile: 'settings.xml'
         - task: Bash@3
           displayName: 'set env BUILD_JDK to $JAVA_HOME'
           inputs:
@@ -79,13 +83,17 @@ jobs:
           inputs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-
+        - task: SonarQubePrepare@4
+            displayName: 'configure SonarQube'
+            inputs:
+              SonarQube: 'SonarQube ONT'
+              scannerMode: 'Other'
         - task: Maven@3
           displayName: 'Run SonarQube analysis'
           inputs:
             mavenPomFile: 'pom.xml'
             goals: 'sonar:sonar'
-            options: '-DskipTests -Psonarqube'
+            options: '-s $(settingsFile.secureFilePath) -DskipTests -Psonarqube'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
