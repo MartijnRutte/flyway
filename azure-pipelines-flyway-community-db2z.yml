@@ -29,10 +29,10 @@ jobs:
     runOnce:
       deploy:   
         steps:
-        - task: DownloadSecureFile@1
-          name: 'settingsfile'
-          inputs:
-            secureFile: 'settings.xml'
+        # - task: DownloadSecureFile@1
+        #   name: 'settingsfile'
+        #   inputs:
+        #     secureFile: 'settings.xml'
         - task: Bash@3
           displayName: 'set env BUILD_JDK to $JAVA_HOME'
           inputs:
