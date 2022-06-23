@@ -30,9 +30,9 @@ jobs:
       deploy:   
         steps:
         - task: DownloadSecureFile@1
-            name: "settingsFile"
-            inputs:
-              secureFile: 'settings.xml'
+          name: 'settingsfile'
+          inputs:
+            secureFile: 'settings.xml'
         - task: Bash@3
           displayName: 'set env BUILD_JDK to $JAVA_HOME'
           inputs:
