@@ -83,27 +83,27 @@ jobs:
           inputs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-        - task: SonarQubePrepare@4
-          displayName: 'configure SonarQube'
-          inputs:
-            SonarQube: 'SonarQube ONT'
-            scannerMode: 'Other'
-        - task: Maven@3
-          displayName: 'Run SonarQube analysis'
-          inputs:
-            mavenPomFile: 'pom.xml'
-            goals: 'sonar:sonar'
-            options: '-s $(settingsFile.secureFilePath) -DskipTests -Psonarqube'
-            publishJUnitResults: false
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.11'
-            mavenVersionOption: 'Default'
-            mavenAuthenticateFeed: false
-            effectivePomSkip: false
-        - task: SonarQubePublish@4
-          displayName: 'Publish SonarQube QualityGate result'
-          inputs:
-            pollingTimeoutSec: '300'
+        # - task: SonarQubePrepare@4
+        #   displayName: 'configure SonarQube'
+        #   inputs:
+        #     SonarQube: 'SonarQube ONT'
+        #     scannerMode: 'Other'
+        # - task: Maven@3
+        #   displayName: 'Run SonarQube analysis'
+        #   inputs:
+        #     mavenPomFile: 'pom.xml'
+        #     goals: 'sonar:sonar'
+        #     options: '-s $(settingsFile.secureFilePath) -DskipTests -Psonarqube'
+        #     publishJUnitResults: false
+        #     javaHomeOption: 'JDKVersion'
+        #     jdkVersionOption: '1.11'
+        #     mavenVersionOption: 'Default'
+        #     mavenAuthenticateFeed: false
+        #     effectivePomSkip: false
+        # - task: SonarQubePublish@4
+        #   displayName: 'Publish SonarQube QualityGate result'
+        #   inputs:
+        #     pollingTimeoutSec: '300'
         # - task: Maven@3
         #   displayName: 'Upload release-candidates to Nexus'
         #   condition: or(variables.isDevelop, variables.isHotfixBranch, variables.isReleaseBranch)
