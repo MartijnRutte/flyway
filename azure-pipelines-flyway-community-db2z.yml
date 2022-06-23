@@ -84,10 +84,10 @@ jobs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
         - task: SonarQubePrepare@4
-            displayName: 'configure SonarQube'
-            inputs:
-              SonarQube: 'SonarQube ONT'
-              scannerMode: 'Other'
+          displayName: 'configure SonarQube'
+          inputs:
+            SonarQube: 'SonarQube ONT'
+            scannerMode: 'Other'
         - task: Maven@3
           displayName: 'Run SonarQube analysis'
           inputs:
