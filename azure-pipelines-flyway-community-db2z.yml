@@ -106,7 +106,7 @@ jobs:
         #     pollingTimeoutSec: '300'
         - task: Maven@3
           displayName: 'Upload release-candidates to Nexus'
-          condition: or(variables.isDevelop, variables.isHotfixBranch, variables.isReleaseBranch)
+          # condition: or(variables.isDevelop, variables.isHotfixBranch, variables.isReleaseBranch)
           inputs:
             mavenPomFile: 'pom.xml'
             goals: 'deploy'
