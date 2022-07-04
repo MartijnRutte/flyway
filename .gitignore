@@ -28,3 +28,4 @@ flyway-rgcompare/rgcompare/
 out/**
 .factorypath
 settings.xml
+.vscode
