@@ -29,10 +29,11 @@ jobs:
     runOnce:
       deploy:   
         steps:
-        - task: DownloadSecureFile@1        
-          name: 'settingsfile'
-          inputs:
-            secureFile: 'settings.xml'
+        # settings.xml is already on agent in .m2 dir, only readable by vsts agent user
+        # - task: DownloadSecureFile@1        
+        #   name: 'settingsfile'
+        #   inputs:
+        #     secureFile: 'settings.xml'
         - task: Bash@3
           displayName: 'set env BUILD_JDK to $JAVA_HOME'
           inputs:
@@ -47,6 +48,7 @@ jobs:
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx3072m'
+            options: '-P nexus-deploy -pl \!flyway-gradle-plugin'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'package'
@@ -109,8 +111,9 @@ jobs:
           # condition: or(variables.isDevelop, variables.isHotfixBranch, variables.isReleaseBranch)
           inputs:
             mavenPomFile: 'pom.xml'
-            goals: 'deploy'
-            options: '-s $(settingsFile.secureFilePath) -DskipTests'
+            goals: 'clean deploy'
+            # Skip upload for now because everytime same version
+            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl \!flyway-gradle-plugin -Dmaven.deploy.skip=true'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'

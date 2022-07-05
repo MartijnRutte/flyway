@@ -27,7 +27,8 @@
     mvn clean install -PCommandlinePlatformAssemblies
     -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.flywaydb</groupId>
+    <!-- <groupId>org.flywaydb</groupId> -->
+    <groupId>${project.groupId}</groupId>
     <artifactId>flyway-parent</artifactId>
     <version>8.5.13</version>
     <packaging>pom</packaging>
@@ -60,7 +61,7 @@
     <modules>
         <module>flyway-core</module>
         <module>flyway-community-db-support</module>
-        <!--module>flyway-gradle-plugin</module-->
+        <module>flyway-gradle-plugin</module>
         <module>flyway-maven-plugin</module>
         <module>flyway-commandline</module>
         <module>flyway-gcp-bigquery</module>
@@ -72,14 +73,14 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshot repository</name>
-            <url>https://nexus.belastingdienst.nl/nexus/repository/repo</url>
+            <id>${snapshotRepository.id}</id>
+            <name>${snapshotRepository.name}</name>
+            <url>${snapshotRepository.url}</url>
         </snapshotRepository>
         <repository>
-            <id>release-candidates</id>
-            <name>release repository</name>
-            <url>https://nexus.belastingdienst.nl/nexus/repository/repo</url>
+            <id>${releaseRepository.id}</id>
+            <name>${releaseRepository.name}</name>
+            <url>${releaseRepository.url}</url>
         </repository>
     </distributionManagement>
 
@@ -635,6 +636,7 @@
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
+                    <updateReleaseInfo>true</updateReleaseInfo>
                     <deployAtEnd>true</deployAtEnd>
                     <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
                 </configuration>
