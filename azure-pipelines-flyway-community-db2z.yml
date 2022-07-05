@@ -48,10 +48,10 @@ jobs:
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx3072m'
-            options: '-P nexus-deploy -pl \!flyway-gradle-plugin'
+            options: '-P nexus-deploy -pl !flyway-gradle-plugin'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            goals: 'package'
+            goals: 'clean package'
             # publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
