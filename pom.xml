@@ -71,16 +71,6 @@
     </modules>
 
     <distributionManagement>
-        <!-- <snapshotRepository>
-            <id>${snapshotRepository.id}</id>
-            <name>${snapshotRepository.name}</name>
-            <url>${snapshotRepository.url}</url>
-        </snapshotRepository>
-        <repository>
-            <id>${releaseRepository.id}</id>
-            <name>${releaseRepository.name}</name>
-            <url>${releaseRepository.url}</url>
-        </repository> -->
         <snapshotRepository>
             <id>snapshots</id>
             <name>Snapshot repository</name>
