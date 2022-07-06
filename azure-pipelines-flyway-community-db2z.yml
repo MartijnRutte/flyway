@@ -116,7 +116,8 @@ jobs:
             mavenPomFile: 'pom.xml'
             goals: 'clean deploy'
             # Skip upload for now because everytime same version
-            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true'
+            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true'
+            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
