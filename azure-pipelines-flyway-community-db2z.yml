@@ -123,8 +123,8 @@ jobs:
             mavenPomFile: 'pom.xml'
             goals: 'clean deploy'
             # Skip upload for now because everytime same version
-            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
-            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
+            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
+            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
