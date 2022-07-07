@@ -49,7 +49,7 @@
 		<sitesRepository.id>sites</sitesRepository.id>
         <sitesRepository.name>Nexus sites repository</sitesRepository.name>
         <sitesRepository.url>dav:https://nexus.belastingdienst.nl/sites/bcao.repo.server/sites/${intern.site}</sitesRepository.url>
-        <project.groupId>nl.belastingdienst.dps.flyway</project.groupId>
+        <project.groupId>nl.belastingdienst.dps.flywaydb</project.groupId>
       </properties>
     </profile>
   </profiles>
