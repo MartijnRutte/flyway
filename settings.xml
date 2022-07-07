@@ -27,7 +27,6 @@
   </servers>
   <pluginGroups>
     <pluginGroup>nl.belastingdienst.dps.flywaydb</pluginGroup>
-    <pluginGroup>org.flywaydb</pluginGroup>
   </pluginGroups>
   <profiles>
     <profile>
