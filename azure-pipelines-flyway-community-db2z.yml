@@ -16,8 +16,8 @@
 
 # Flyway pipeline db2Z community edition
 
-trigger:
-- feature/db2z
+# trigger:
+# - feature/db2z
 
 jobs:
 - deployment:
@@ -51,13 +51,14 @@ jobs:
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx3072m'
-            options: '-P nexus-deploy -pl !flyway-gradle-plugin'
+            options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'clean package'
             # publishJUnitResults: false
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.11'
+            # javaHomeOption: 'JDKVersion'
+            jdkVersionOption: '11'
+            jdkArchitectureOption: 'openjdk'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
@@ -116,8 +117,8 @@ jobs:
             mavenPomFile: 'pom.xml'
             goals: 'clean deploy'
             # Skip upload for now because everytime same version
-            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true'
-            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin'
+            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
+            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
