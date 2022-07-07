@@ -16,8 +16,8 @@
 
 # Flyway pipeline db2Z community edition
 
-# trigger:
-# - feature/db2z
+trigger:
+- feature/db2z
 
 jobs:
 - deployment:
@@ -43,6 +43,7 @@ jobs:
             targetType: 'inline'
             script: printenv | sort
         - task: Maven@3
+          displayName: 'Maven clean package'
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx3072m'
@@ -57,16 +58,16 @@ jobs:
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-        - task: Maven@3
-          inputs:
-            mavenPomFile: 'pom.xml'
-            options: '-s $(Build.Repository.LocalPath)/settings.xml'
-            goals: 'flyway:info'
-            jdkVersionOption: '11'
-            jdkArchitectureOption: 'openjdk'
-            mavenVersionOption: 'Default'
-            mavenAuthenticateFeed: false
-            effectivePomSkip: false
+        # - task: Maven@3
+        #   inputs:
+        #     mavenPomFile: 'pom.xml'
+        #     options: '-s $(Build.Repository.LocalPath)/settings.xml'
+        #     goals: 'flyway:info'
+        #     jdkVersionOption: '11'
+        #     jdkArchitectureOption: 'openjdk'
+        #     mavenVersionOption: 'Default'
+        #     mavenAuthenticateFeed: false
+        #     effectivePomSkip: false
 
         # - task: Bash@3
         #   displayName: 'Remove previous Flyway jars from runtime'
@@ -122,8 +123,8 @@ jobs:
             mavenPomFile: 'pom.xml'
             goals: 'clean deploy'
             # Skip upload for now because everytime same version
-            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
-            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
+            # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
+            options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '1.11'
