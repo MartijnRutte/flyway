@@ -107,8 +107,8 @@ jobs:
         #     goals: 'sonar:sonar'
         #     options: '-s $(settingsFile.secureFilePath) -DskipTests -Psonarqube'
         #     publishJUnitResults: false
-        #     javaHomeOption: 'JDKVersion'
-        #     jdkVersionOption: '1.11'
+        #     jdkVersionOption: '11'
+        #     jdkArchitectureOption: 'openjdk'
         #     mavenVersionOption: 'Default'
         #     mavenAuthenticateFeed: false
         #     effectivePomSkip: false
@@ -126,8 +126,8 @@ jobs:
             options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dmaven.deploy.skip=true -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
             # options: '-DskipTests -P nexus-deploy -DupdateReleaseInfo=true -pl !flyway-gradle-plugin -Dnexus.user=$(nexus.user) -Dnexus.password=$(nexus.password) -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: false
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.11'
+            jdkVersionOption: '11'
+            jdkArchitectureOption: 'openjdk'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
