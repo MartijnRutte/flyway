@@ -69,32 +69,32 @@ jobs:
         #     mavenAuthenticateFeed: false
         #     effectivePomSkip: false
 
-        # - task: Bash@3
-        #   displayName: 'Remove previous Flyway jars from runtime'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
+        - task: Bash@3
+          displayName: 'Remove previous Flyway jars from runtime'
+          inputs:
+            targetType: inline
+            script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
 
-        # - task: Bash@3
-        #   displayName: 'Copy Flyway jars from target to runtime'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
-        # - task: Bash@3
-        #   displayName: 'Do a Flyway test with the new jars: # 1: The cleanup'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-        # - task: Bash@3
-        #   displayName: 'Do a Flyway test with the new jars: # 2: The migration'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
-        # - task: Bash@3
-        #   displayName: 'And finally clean up the mess you made'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
+        - task: Bash@3
+          displayName: 'Copy Flyway jars from target to runtime'
+          inputs:
+            targetType: inline
+            script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
+        - task: Bash@3
+          displayName: 'Do a Flyway test with the new jars: # 1: The cleanup'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
+        - task: Bash@3
+          displayName: 'Do a Flyway test with the new jars: # 2: The migration'
+          inputs:
+            targetType: inline
+            script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
+        - task: Bash@3
+          displayName: 'And finally clean up the mess you made'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
         # - task: SonarQubePrepare@4
         #   displayName: 'configure SonarQube'
         #   inputs:
