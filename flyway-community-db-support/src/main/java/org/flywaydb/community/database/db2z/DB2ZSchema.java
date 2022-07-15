@@ -140,9 +140,11 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         }
 
         // sequences
+        LOG.info("See if there are any sequence to drop");
         for (String dropStatement : generateDropStatementsForSequences()) {
             jdbcTemplate.execute(dropStatement);
         }
+        LOG.info("Ready dropping sequences if any");
 
         // procedures
         for (String dropStatement : generateDropStatementsForProcedures()) {
