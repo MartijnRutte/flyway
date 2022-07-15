@@ -43,8 +43,11 @@ public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
     protected void doDrop() throws SQLException {
 		
         String tableSpaceName = jdbcTemplate.queryForString("SELECT TSNAME FROM SYSIBM.SYSTABLES WHERE NAME=? AND CREATOR=?", this.getName(), this.getSchema().getName());
-		String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
-		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
+		// String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
+        // String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
+        // Use creator, not database.
+        String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
+		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 
 		if(implicit.equals("N") && (tableSpaceType.equals("G") || tableSpaceType.equals("R"))) {
 	        LOG.debug("Table '" + this + "' cannot be dropped directly (tableSpaceName=" + tableSpaceName + ", implicit=" + implicit + ", tableSpaceType=" + tableSpaceType + ")");
