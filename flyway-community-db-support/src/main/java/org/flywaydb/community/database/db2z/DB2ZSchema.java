@@ -297,6 +297,7 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
 
     @Override
     protected DB2ZTable[] doAllTables() throws SQLException {
+        LOG.info("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T' and DBNAME = '" + database.getName() + "' AND CREATOR = ?", name)
         return findTables("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T' and DBNAME = '" + database.getName() + "' AND CREATOR = ?", name);
     }
 
