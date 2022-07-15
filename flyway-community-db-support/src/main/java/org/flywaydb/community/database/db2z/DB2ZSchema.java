@@ -119,11 +119,9 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
             jdbcTemplate.execute(dropStatement);
         }
 
-        LOG.info("See if there are any tables to drop");
         for (Table table : allTables()) {
             table.drop();
         }
-        LOG.info("Ready dropping tables if any");
 
         // temporary Tables
         for (String dropStatement : generateDropStatements("G", "TABLE")) {
@@ -140,11 +138,9 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
         }
 
         // sequences
-        LOG.info("See if there are any sequence to drop");
         for (String dropStatement : generateDropStatementsForSequences()) {
             jdbcTemplate.execute(dropStatement);
         }
-        LOG.info("Ready dropping sequences if any");
 
         // procedures
         for (String dropStatement : generateDropStatementsForProcedures()) {
@@ -301,8 +297,8 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
 
     @Override
     protected DB2ZTable[] doAllTables() throws SQLException {
-        LOG.info("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T' and DBNAME = '" + database.getName() + "' AND CREATOR = ?" + name);
-        return findTables("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T' and DBNAME = '" + database.getName() + "' AND CREATOR = ?", name);
+        // return findTables("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T' and DBNAME = '" + database.getName() + "' AND CREATOR = ?", name);
+        return findTables("select rtrim(NAME) from SYSIBM.SYSTABLES where TYPE='T'" + "' AND CREATOR = ?", name);
     }
 
     @Override
