@@ -119,9 +119,11 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
             jdbcTemplate.execute(dropStatement);
         }
 
+        LOG.info("See if there are any tables to drop");
         for (Table table : allTables()) {
             table.drop();
         }
+        LOG.info("Ready dropping tables if any");
 
         // temporary Tables
         for (String dropStatement : generateDropStatements("G", "TABLE")) {
