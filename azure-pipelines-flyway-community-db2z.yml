@@ -58,17 +58,17 @@ jobs:
           displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
           inputs:
             targetType: inline
-            script: 'flyway clean -password=$(flyway.password) -user=$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
         - task: Bash@3
           displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
           inputs:
             targetType: inline
-            script: 'flyway migrate -password=$(flyway.password) -user=$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+            script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
         - task: Bash@3
           displayName: 'And finally clean up the mess you made using the commandline'
           inputs:
             targetType: inline
-            script: 'flyway clean -password=$(flyway.password) -user=$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
 
         # - task: Maven@3
         #   displayName: 'Run SonarQube analysis'
