@@ -37,55 +37,39 @@ jobs:
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'clean package'
-            # publishJUnitResults: false
-            # javaHomeOption: 'JDKVersion'
             jdkVersionOption: '11'
             jdkArchitectureOption: 'openjdk'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-        # - task: Maven@3
-        #   inputs:
-        #     mavenPomFile: 'pom.xml'
-        #     options: '-s $(Build.Repository.LocalPath)/settings.xml'
-        #     goals: 'flyway:info'
-        #     jdkVersionOption: '11'
-        #     jdkArchitectureOption: 'openjdk'
-        #     mavenVersionOption: 'Default'
-        #     mavenAuthenticateFeed: false
-        #     effectivePomSkip: false
 
         - task: Bash@3
-          displayName: 'Remove previous Flyway jars from runtime'
+          displayName: 'Remove previous Flyway commandline jars from runtime'
           inputs:
             targetType: inline
             script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
 
         - task: Bash@3
-          displayName: 'Copy Flyway jars from target to runtime'
+          displayName: 'Copy commandline Flyway jars from target to runtime'
           inputs:
             targetType: inline
             script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
         - task: Bash@3
-          displayName: 'Do a Flyway test with the new jars: # 1: The cleanup'
+          displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
           inputs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
         - task: Bash@3
-          displayName: 'Do a Flyway test with the new jars: # 2: The migration'
+          displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
           inputs:
             targetType: inline
-            script: 'flyway migrate -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$FLYWAY_CONF -createSchemas="false" || exit 1'
+            script: 'flyway migrate password=$(flyway.password) user=$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
         - task: Bash@3
-          displayName: 'And finally clean up the mess you made'
+          displayName: 'And finally clean up the mess you made using the commandline'
           inputs:
             targetType: inline
             script: 'flyway clean -configFiles=$FLYWAY_CONF || exit 1'
-        # - task: SonarQubePrepare@4
-        #   displayName: 'configure SonarQube'
-        #   inputs:
-        #     SonarQube: 'SonarQube ONT'
-        #     scannerMode: 'Other'
+
         # - task: Maven@3
         #   displayName: 'Run SonarQube analysis'
         #   inputs:
