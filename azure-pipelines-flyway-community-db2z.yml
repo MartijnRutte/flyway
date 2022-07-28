@@ -10,7 +10,7 @@ jobs:
   displayName: 'Building the flyway runtime'
   environment: 'flyway-develop'
   pool:
-    name: DPS
+    name: ruttm03
   strategy:
     runOnce:
       deploy:   
