@@ -35,8 +35,10 @@ public class DB2ZConnection extends Connection<DB2ZDatabase> {
 
     @Override
     public void doChangeCurrentSchemaOrSearchPathTo(String schema) throws SQLException {
+        // Maybe sqlid not same as schema name and entered as config property
+        String sqlId = (database.getSqlId() == "") ? schema : database.getSqlId();
+        jdbcTemplate.execute("SET CURRENT SQLID = '" + sqlId + "'");
         jdbcTemplate.execute("SET SCHEMA " + database.quote(schema));
-        jdbcTemplate.execute("SET CURRENT SQLID = '" + schema + "'");
     }
 
     @Override
