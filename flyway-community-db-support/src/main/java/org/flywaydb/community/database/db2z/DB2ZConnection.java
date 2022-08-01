@@ -17,12 +17,15 @@ package org.flywaydb.community.database.db2z;
 
 import org.flywaydb.core.internal.database.base.Connection;
 import org.flywaydb.core.internal.database.base.Schema;
+import org.flywaydb.core.internal.exception.FlywaySqlException;
 
+import lombok.CustomLog;
 import java.sql.SQLException;
 
 /**
  * DB2 connection.
  */
+@CustomLog
 public class DB2ZConnection extends Connection<DB2ZDatabase> {
     DB2ZConnection(DB2ZDatabase database, java.sql.Connection connection) {
         super(database, connection);
@@ -31,6 +34,20 @@ public class DB2ZConnection extends Connection<DB2ZDatabase> {
     @Override
     protected String getCurrentSchemaNameOrSearchPath() throws SQLException {
         return jdbcTemplate.queryForString("select current_schema from sysibm.sysdummy1");
+    }
+
+    @Override
+    public void changeCurrentSchemaTo(Schema schema) {
+        try {
+            if (!schema.exists()) {
+                return;
+            }
+            doChangeCurrentSchemaOrSearchPathTo(schema.getName());
+        } catch (SQLException e) {
+            LOG.info("SET CURRENT SQLID = '" + sqlId + "'");
+            LOG.info("SET SCHEMA " + database.quote(schema));
+            throw new FlywaySqlException("Error setting current sqlid and/or schema", e);
+        }
     }
 
     @Override
