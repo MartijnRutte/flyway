@@ -44,8 +44,9 @@ public class DB2ZConnection extends Connection<DB2ZDatabase> {
             }
             doChangeCurrentSchemaOrSearchPathTo(schema.getName());
         } catch (SQLException e) {
+            String sqlId = (database.getSqlId() == "") ? schema.getName() : database.getSqlId();
             LOG.info("SET CURRENT SQLID = '" + sqlId + "'");
-            LOG.info("SET SCHEMA " + database.quote(schema));
+            LOG.info("SET SCHEMA " + database.quote(schema.getName()));
             throw new FlywaySqlException("Error setting current sqlid and/or schema", e);
         }
     }
