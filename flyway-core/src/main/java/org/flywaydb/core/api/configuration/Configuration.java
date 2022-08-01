@@ -609,7 +609,15 @@ public interface Configuration {
     String getOracleKerberosConfigFile();
 
     String getOracleKerberosCacheFile();
+
+    /**
+     * The db2z database name and SQLID
+     * Needed for setting up a connection and
+     * @return
+     */
     String getDb2zDatabaseName();
+    String getDb2zsqlId();
+    
 
     /**
      * Your Flyway license key (FL01...). Not yet a Flyway Teams Edition customer?

@@ -111,6 +111,7 @@ public class ConfigUtils {
 
     // DB2Z-specific
     public static final String DB2Z_DATABASE_NAME = "flyway.db2z.databaseName";
+    public static final String DB2Z_SQLID = "flyway.db2z.sqlId";
 
     // Command-line specific
     public static final String JAR_DIRS = "flyway.jarDirs";
@@ -358,6 +359,10 @@ public class ConfigUtils {
         // DB2Z-specific
         if ("FLYWAY_DB2Z_DATABASE_NAME".equals(key)) {
             return DB2Z_DATABASE_NAME;
+        }
+        // DB2Z-specific
+        if ("FLYWAY_DB2Z_SQLID".equals(key)) {
+            return DB2Z_SQLID;
         }
 
         // Command-line specific
