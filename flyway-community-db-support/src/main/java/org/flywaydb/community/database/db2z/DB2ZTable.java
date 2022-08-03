@@ -48,21 +48,23 @@ public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
 		// String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
         // String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
         // Use creator, not database.
-        LOG.debug("inside db2z drop table routine");
-        LOG.debug(this.getName());
-        LOG.debug(this.getSchema().getName());
-        LOG.debug("---------------------");
-
-
+        
         String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 
-		if(implicit.equals("N") && (tableSpaceType.equals("G") || tableSpaceType.equals("R"))) {
-	        LOG.debug("Table '" + this + "' cannot be dropped directly (tableSpaceName=" + tableSpaceName + ", implicit=" + implicit + ", tableSpaceType=" + tableSpaceType + ")");
-		} else {
-	        LOG.debug("Dropping table " + this + " ...");
-			jdbcTemplate.execute("DROP TABLE " + this);			
-		}
+        if (implicit.isEmpty() || implicit == null)  {
+            LOG.debug("Nothing to drop,  because table");
+            LOG.debug(this.getName());
+            LOG.debug("does exist but with creator other than");
+            LOG.debug(this.getSchema().getName());
+        } else {
+            if (implicit.equals("N") && (tableSpaceType.equals("G") || tableSpaceType.equals("R"))) {
+                LOG.debug("Table '" + this + "' cannot be dropped directly (tableSpaceName=" + tableSpaceName + ", implicit=" + implicit + ", tableSpaceType=" + tableSpaceType + ")");
+            } else {
+                LOG.debug("Dropping table " + this + " ...");
+                jdbcTemplate.execute("DROP TABLE " + this);			
+            }
+        }
     }
 
     @Override
