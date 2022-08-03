@@ -64,7 +64,7 @@ jobs:
         - task: SonarQubePrepare@4
           displayName: 'configure SonarQube'
           inputs:
-            SonarQube: 'SonarQube KNUTSEL'
+            SonarQube: 'Belastingdienst SonarQube Knutsel Host'
             scannerMode: 'Other'
         - task: Maven@3
           displayName: 'Run SonarQube analysis'
