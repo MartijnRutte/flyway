@@ -52,7 +52,7 @@ public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
         String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 
-        if (implicit.isEmpty() || implicit == null)  {
+        if (implicit == null || implicit.isEmpty())  {
             LOG.debug("Nothing to drop because table " + this.getName() + " does exist but with creator other than " + this.getSchema().getName());
         } else {
             if (implicit.equals("N") && (tableSpaceType.equals("G") || tableSpaceType.equals("R"))) {
