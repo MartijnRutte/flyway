@@ -18,58 +18,70 @@ jobs:
         # Below we use fixed paths on agent. Have to do this dynamically using custom task etc. For now, o.k.
         - checkout: self
           clean: true
-        - task: Bash@3
-          displayName: 'set env BUILD_JDK to $JAVA_HOME'
+        
+        # - task: Maven@3
+        #   displayName: 'Maven clean package'
+        #   inputs:
+        #     mavenPomFile: 'pom.xml'
+        #     mavenOptions: '-Xmx3072m'
+        #     options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
+        #     publishJUnitResults: true
+        #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        #     goals: 'clean package'
+        #     jdkVersionOption: '11'
+        #     jdkArchitectureOption: 'openjdk'
+        #     mavenVersionOption: 'Default'
+        #     mavenAuthenticateFeed: false
+        #     effectivePomSkip: false
+
+        # - task: Bash@3
+        #   displayName: 'Remove previous Flyway commandline jars from runtime'
+        #   inputs:
+        #     targetType: inline
+        #     script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
+
+        # - task: Bash@3
+        #   displayName: 'Copy commandline Flyway jars from target to runtime'
+        #   inputs:
+        #     targetType: inline
+        #     script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
+        # - task: Bash@3
+        #   displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
+        #   inputs:
+        #     targetType: inline
+        #     script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+        # - task: Bash@3
+        #   displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
+        #   inputs:
+        #     targetType: inline
+        #     script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+        # - task: Bash@3
+        #   displayName: 'And finally clean up the mess you made using the commandline'
+        #   inputs:
+        #     targetType: inline
+        #     script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+
+        - task: SonarQubePrepare@4
+          displayName: 'configure SonarQube'
           inputs:
-            targetType: 'inline'
-            script: 'echo "##vso[task.setvariable variable=BUILD_JDK]$JAVA_HOME"'
-        - task: Bash@3
-          displayName: 'Print environment variables'
-          inputs:
-            targetType: 'inline'
-            script: printenv | sort
+            SonarQube: 'SonarQube KNUTSEL'
+            scannerMode: 'Other'
         - task: Maven@3
-          displayName: 'Maven clean package'
+          displayName: 'Run SonarQube analysis'
           inputs:
             mavenPomFile: 'pom.xml'
-            mavenOptions: '-Xmx3072m'
-            options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
-            publishJUnitResults: true
-            testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            goals: 'clean package'
+            goals: 'sonar:sonar'
+            options: >
+              --no-transfer-progress
+              -s $(Build.Repository.LocalPath)/settings.xml
+              -DskipTests -Psonarqube
+            publishJUnitResults: false
+            javaHomeOption: 'JDKVersion'
             jdkVersionOption: '11'
             jdkArchitectureOption: 'openjdk'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-
-        - task: Bash@3
-          displayName: 'Remove previous Flyway commandline jars from runtime'
-          inputs:
-            targetType: inline
-            script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
-
-        - task: Bash@3
-          displayName: 'Copy commandline Flyway jars from target to runtime'
-          inputs:
-            targetType: inline
-            script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
-        - task: Bash@3
-          displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
-          inputs:
-            targetType: inline
-            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-        - task: Bash@3
-          displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
-          inputs:
-            targetType: inline
-            script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-        - task: Bash@3
-          displayName: 'And finally clean up the mess you made using the commandline'
-          inputs:
-            targetType: inline
-            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-
         # - task: Maven@3
         #   displayName: 'Run SonarQube analysis'
         #   inputs:
