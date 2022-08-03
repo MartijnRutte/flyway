@@ -24,7 +24,7 @@ jobs:
           inputs:
             mavenPomFile: 'pom.xml'
             mavenOptions: '-Xmx3072m'
-            options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
+            options: '-P nexus -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             goals: 'clean package'
