@@ -38,7 +38,7 @@
       </properties>
     </profile>
     <profile>
-      <id>nexus-deploy</id>
+      <id>nexus</id>
       <properties>
         <snapshotRepository.id>snapshots</snapshotRepository.id>
         <snapshotRepository.name>snapshots</snapshotRepository.name>
@@ -55,7 +55,7 @@
   </profiles>
   <activeProfiles>
     <activeProfile>sonarqube</activeProfile>
-    <activeProfile>nexus-deploy</activeProfile>
+    <activeProfile>nexus</activeProfile>
   </activeProfiles>
 </settings>
 
