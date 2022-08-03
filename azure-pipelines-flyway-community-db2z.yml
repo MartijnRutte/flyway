@@ -34,33 +34,6 @@ jobs:
             mavenAuthenticateFeed: false
             effectivePomSkip: false
 
-        # - task: Bash@3
-        #   displayName: 'Remove previous Flyway commandline jars from runtime'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
-
-        # - task: Bash@3
-        #   displayName: 'Copy commandline Flyway jars from target to runtime'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
-        # - task: Bash@3
-        #   displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-        # - task: Bash@3
-        #   displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-        # - task: Bash@3
-        #   displayName: 'And finally clean up the mess you made using the commandline'
-        #   inputs:
-        #     targetType: inline
-        #     script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
-
         - task: SonarQubePrepare@4
           displayName: 'configure SonarQube'
           inputs:
@@ -83,20 +56,31 @@ jobs:
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-            
-        # - task: Maven@3
-        #   displayName: 'Run SonarQube analysis'
-        #   inputs:
-        #     mavenPomFile: 'pom.xml'
-        #     goals: 'sonar:sonar'
-        #     options: '-s $(settingsFile.secureFilePath) -DskipTests -Psonarqube'
-        #     publishJUnitResults: false
-        #     jdkVersionOption: '11'
-        #     jdkArchitectureOption: 'openjdk'
-        #     mavenVersionOption: 'Default'
-        #     mavenAuthenticateFeed: false
-        #     effectivePomSkip: false
-        # - task: SonarQubePublish@4
-        #   displayName: 'Publish SonarQube QualityGate result'
-        #   inputs:
-        #     pollingTimeoutSec: '300'
+
+        - task: Bash@3
+          displayName: 'Remove previous Flyway commandline jars from runtime'
+          inputs:
+            targetType: inline
+            script: 'rm -f $FLYWAY_RUNTIME_LIB/*jar'
+
+        - task: Bash@3
+          displayName: 'Copy commandline Flyway jars from target to runtime'
+          inputs:
+            targetType: inline
+            script: 'cp $(Build.Repository.LocalPath)/*/target/*.jar $FLYWAY_RUNTIME_LIB'
+        - task: Bash@3
+          displayName: 'Do a Flyway commandline test with the new jars: # 1: The cleanup'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+        - task: Bash@3
+          displayName: 'Do a Flyway commandline test with the new jars: # 2: The migration'
+          inputs:
+            targetType: inline
+            script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+        - task: Bash@3
+          displayName: 'And finally clean up the mess you made using the commandline'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
+
