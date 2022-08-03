@@ -75,6 +75,7 @@ jobs:
               --no-transfer-progress
               -s $(Build.Repository.LocalPath)/settings.xml
               -DskipTests -Psonarqube
+              -pl !flyway-gradle-plugin
             publishJUnitResults: false
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: '11'
