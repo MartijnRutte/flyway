@@ -30,7 +30,7 @@
   </pluginGroups>
   <profiles>
     <profile>
-      <id>sonarqube-host</id>
+      <id>sonarqube</id>
       <properties>
         <!--sonar.host.url>https://qmp.belastingdienst.nl/sonar/</sonar.host.url-->
         <sonar.host.url>http://owsoel23680.ont.belastingdienst.nl:9000/</sonar.host.url>
