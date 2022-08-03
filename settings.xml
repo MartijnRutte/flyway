@@ -34,7 +34,7 @@
       <properties>
         <!--sonar.host.url>https://qmp.belastingdienst.nl/sonar/</sonar.host.url-->
         <sonar.host.url>http://owsoel23680.ont.belastingdienst.nl:9000/</sonar.host.url>
-        <sonar.login>${sonar.token}</sonar.login>
+        <sonar.login>${sonar.knutsel.token}</sonar.login>
       </properties>
     </profile>
     <profile>
