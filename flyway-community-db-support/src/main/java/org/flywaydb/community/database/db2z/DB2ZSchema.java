@@ -41,7 +41,13 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
      */
     DB2ZSchema(JdbcTemplate jdbcTemplate, DB2ZDatabase database, String name) {
         super(jdbcTemplate, database, name);
+        LOG.info("LOG DE DB NAAM);
+        LOG.info(database.getName());
+        LOG.info("LOG DE SCHEMA NAAM");
+        LOG.info(name);
+        LOG.info("-----------------");
     }
+    
 
     @Override
     protected boolean doExists() throws SQLException {
