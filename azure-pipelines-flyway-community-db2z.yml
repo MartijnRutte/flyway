@@ -19,20 +19,20 @@ jobs:
         - checkout: self
           clean: true
         
-        # - task: Maven@3
-        #   displayName: 'Maven clean package'
-        #   inputs:
-        #     mavenPomFile: 'pom.xml'
-        #     mavenOptions: '-Xmx3072m'
-        #     options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
-        #     publishJUnitResults: true
-        #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        #     goals: 'clean package'
-        #     jdkVersionOption: '11'
-        #     jdkArchitectureOption: 'openjdk'
-        #     mavenVersionOption: 'Default'
-        #     mavenAuthenticateFeed: false
-        #     effectivePomSkip: false
+        - task: Maven@3
+          displayName: 'Maven clean package'
+          inputs:
+            mavenPomFile: 'pom.xml'
+            mavenOptions: '-Xmx3072m'
+            options: '-P nexus-deploy -pl !flyway-gradle-plugin -s $(Build.Repository.LocalPath)/settings.xml'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            goals: 'clean package'
+            jdkVersionOption: '11'
+            jdkArchitectureOption: 'openjdk'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
 
         # - task: Bash@3
         #   displayName: 'Remove previous Flyway commandline jars from runtime'
@@ -83,6 +83,7 @@ jobs:
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
+            
         # - task: Maven@3
         #   displayName: 'Run SonarQube analysis'
         #   inputs:
