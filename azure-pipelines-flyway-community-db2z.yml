@@ -84,3 +84,19 @@ jobs:
             targetType: inline
             script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf || exit 1'
 
+        - task: Bash@3
+          displayName: 'Do a Flyway commandline test with the new jars and second schema: # 1: The cleanup'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf -db2z.sqlId=SDPO01 -defaultSchema=SDPO81 || exit 1'
+        - task: Bash@3
+          displayName: 'Do a Flyway commandline test with the new jars and second schema: # 2: The migration'
+          inputs:
+            targetType: inline
+            script: 'flyway migrate -password=$(flyway.password) -user=\$(flyway.user) -locations="filesystem:$(Build.Repository.LocalPath)/test_data" -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf -db2z.sqlId=SDPO01 -defaultSchema=SDPO81 || exit 1'
+        - task: Bash@3
+          displayName: 'And finally clean up the mess you made in second schema using the commandline'
+          inputs:
+            targetType: inline
+            script: 'flyway clean -password=$(flyway.password) -user=\$(flyway.user) -configFiles=$(Build.Repository.LocalPath)/flyway-sdp.conf -db2z.sqlId=SDPO01 -defaultSchema=SDPO81 || exit 1'
+
