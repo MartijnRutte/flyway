@@ -198,9 +198,10 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
      * @throws java.sql.SQLException when the statements could not be generated.
      */
     private List<String> generateDropStatementsForRegularTablespace() throws SQLException {
-		//Only drop explicitly created tablespaces for current database and created under this specific schema authorization ID
-		//Note that this also drops the related table for partitioned tablespaces.
-        String dropTablespaceGenQuery = "select rtrim(NAME) FROM SYSIBM.SYSTABLESPACE where IMPLICIT = 'N' AND DBNAME = '" + database.getName() + "' AND CREATOR = '" + name + "' AND TYPE <> 'O'";
+		// Only drop explicitly created tablespaces for current database and created under this specific schema authorization ID
+        // Note that this also drops the related table for partitioned tablespaces.
+        // creator = sqlid, not schema
+        String dropTablespaceGenQuery = "select rtrim(NAME) FROM SYSIBM.SYSTABLESPACE where IMPLICIT = 'N' AND DBNAME = '" + database.getName() + "' AND CREATOR = '" + database.getSqlId() + "' AND TYPE <> 'O'";
 
         List<String> dropStatements = new ArrayList<>();
         List<String> dbObjects = jdbcTemplate.queryForStringList(dropTablespaceGenQuery);
@@ -212,7 +213,8 @@ public class DB2ZSchema extends Schema<DB2ZDatabase, DB2ZTable> {
     }
     
     private List<String> generateDropStatementsForLobTablespace() throws SQLException {
-    	String dropTablespaceGenQuery = "select rtrim(NAME) FROM SYSIBM.SYSTABLESPACE where IMPLICIT = 'N' AND DBNAME = '" + database.getName() + "' AND CREATOR = '" + name + "' AND TYPE = 'O'";
+        // creator = sqlid, not schema
+    	String dropTablespaceGenQuery = "select rtrim(NAME) FROM SYSIBM.SYSTABLESPACE where IMPLICIT = 'N' AND DBNAME = '" + database.getName() + "' AND CREATOR = '" + database.getSqlId() + "' AND TYPE = 'O'";
 
         List<String> dropStatements = new ArrayList<>();
         List<String> dbObjects = jdbcTemplate.queryForStringList(dropTablespaceGenQuery);
