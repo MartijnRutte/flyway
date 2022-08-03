@@ -2,7 +2,7 @@
 # Build flyway jars and test with commandline.
 # Do not upload to nexus. That will be done in separate pipeline on its own branch, forked from this one, but with adjusted GroupId en dependencies in the pom files of parent and children
 
-trigger: None
+trigger: none
 # - feature/db2z
 
 jobs:
