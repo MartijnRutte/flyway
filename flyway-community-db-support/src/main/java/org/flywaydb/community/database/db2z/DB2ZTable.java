@@ -21,10 +21,12 @@ import org.flywaydb.core.internal.database.base.Table;
 import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 
 import java.sql.SQLException;
+import lombok.CustomLog;
 
 /**
  * Db2-specific table.
  */
+@CustomLog
 public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
     private static final Log LOG = LogFactory.getLog(DB2ZTable.class);
     /**
@@ -46,6 +48,12 @@ public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
 		// String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
         // String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
         // Use creator, not database.
+        LOG.debug("inside db2z drop table routine");
+        LOG.debug(this.getName());
+        LOG.debug(this.getSchema().getName());
+        LOG.debug("---------------------");
+
+
         String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", this.getSchema().getName(), tableSpaceName);
 
