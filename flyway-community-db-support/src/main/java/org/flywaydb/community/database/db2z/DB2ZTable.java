@@ -47,13 +47,14 @@ public class DB2ZTable extends Table<DB2ZDatabase, DB2ZSchema> {
         String tableSpaceName = jdbcTemplate.queryForString("SELECT TSNAME FROM SYSIBM.SYSTABLES WHERE NAME=? AND CREATOR=?", this.getName(), this.getSchema().getName());
 		// String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
         // String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE DBNAME=? AND NAME=?", database.getName(), tableSpaceName);
-        // Use creator, not database. Use sqlid as creator with tablespace, schema with table
+        // Use creator, not database. Use sqlid as creator with tablespace, schema with table. When sqlid not set, implicitly use schema name for sqlid
         
-        String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", database.getSqlId(), tableSpaceName);
-		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", database.getSqlId(), tableSpaceName);
+        String sqlId = (database.getSqlId() == "") ?this.getSchema().getName() : database.getSqlId();
+        String implicit = jdbcTemplate.queryForString("SELECT IMPLICIT FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", sqlId, tableSpaceName);
+		String tableSpaceType = jdbcTemplate.queryForString("SELECT TYPE FROM SYSIBM.SYSTABLESPACE WHERE CREATOR=? AND NAME=?", sqlId, tableSpaceName);
 
         if (implicit == null || implicit.isEmpty())  {
-            LOG.debug("Nothing to drop because table " + this.getName() + " does exist on tablespace " + tableSpaceName + " but with creator other than " + database.getSqlId());
+            LOG.debug("Nothing to drop because table " + this.getName() + " does exist on tablespace " + tableSpaceName + " but with creator other than " + sqlId);
         } else {
             if (implicit.equals("N") && (tableSpaceType.equals("G") || tableSpaceType.equals("R"))) {
                 LOG.debug("Table '" + this + "' cannot be dropped directly (tableSpaceName=" + tableSpaceName + ", implicit=" + implicit + ", tableSpaceType=" + tableSpaceType + ")");
